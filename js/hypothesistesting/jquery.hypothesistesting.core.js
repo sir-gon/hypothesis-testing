@@ -73,14 +73,20 @@
 		},		
 
 		parseFloatArray: function (vector_string) {
-			vector = vector_string.replace(/\s/g, '');
+			vector = vector_string.replace(/\s/g, ',');
 			
 			vector = vector.split(',');
 			output = [];
 
 			for(var i=0; i<vector.length; i++) {
-				if(vector[i] != '')
-					output.push(+vector[i]);
+				x_i = vector[i];
+				
+				if(x_i != '' && x_i != null )
+					x_i = +x_i; // cast
+				
+				console.log(x_i);
+				if(!isNaN(parseFloat(x_i)) && isFinite(x_i) )
+					output.push(x_i);
 			}
 
 			return output;
