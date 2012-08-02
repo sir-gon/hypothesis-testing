@@ -73,8 +73,8 @@
 		},		
 
 		parseFloatArray: function (vector_string) {
+
 			vector = vector_string.replace(/\s/g, ',');
-			
 			vector = vector.split(',');
 			output = [];
 
@@ -87,6 +87,7 @@
 				console.log(x_i);
 				if(!isNaN(parseFloat(x_i)) && isFinite(x_i) )
 					output.push(x_i);
+
 			}
 
 			return output;
