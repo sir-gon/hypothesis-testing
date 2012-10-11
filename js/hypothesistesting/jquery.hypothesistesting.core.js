@@ -84,7 +84,7 @@
 				if(x_i != '' && x_i != null )
 					x_i = +x_i; // cast
 				
-				console.log(x_i);
+				//console.log(x_i);
 				if(!isNaN(parseFloat(x_i)) && isFinite(x_i) )
 					output.push(x_i);
 
@@ -128,6 +128,25 @@
 			};
 
 			return output;
+		},
+
+		/**
+		 * Crea un vector con el valor x filtrado
+		 */
+		filter : function(vector, x) {
+
+			var n = vector.length;
+			var filtered = [];
+			var j = 0;
+
+			for (j = 0; j < n; j++) {
+				if(vector[j] != x)
+				{
+					filtered.push(vector[j]);
+				}
+			}
+
+			return filtered;
 		}
 
 	};

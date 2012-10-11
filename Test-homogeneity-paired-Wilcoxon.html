@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset=utf-8 />
+		<title>Sistema Estad&iacute;stico de Contraste de Hip&oacute;tesis</title>
+		<!-- <link rel="stylesheet" type="text/css" media="screen" href="css/master.css" /> -->
+		<link type="text/css" href="css/ui-lightness/jquery-ui-1.8.19.custom.css" rel="stylesheet" />
+		<link type="text/css" href="css/main.css" rel="stylesheet" />
+
+		<script type="text/javascript" src="js/jquery/jquery-1.7.2.min.js"></script>
+		<script type="text/javascript" src="js/jquery/jquery-ui-1.8.19.custom.min.js"></script>
+		<script type="text/javascript" src="js/jquery/jquery.dialog.extra.js"></script>
+		<script type="text/javascript" src="js/flot/jquery.flot.min.js"></script>
+		<!-- <script type="text/javascript" src="js/jStat.min.js"></script> -->
+		<!-- <script type="text/javascript" src="js/jStat-1.0.0/jStat.js"></script> -->
+		<script type="text/javascript" src="js/jStat-git/jStat.js"></script>
+		<script type="text/javascript" src="js/jquery/mousehold.js"></script>
+
+		<script type="text/javascript" src="js/bootstrap/bootstrap.core.js"></script>
+		<script type="text/javascript" src="js/bootstrap/bootstrap.statistic.js"></script>
+
+		<script type="text/javascript" src="js/hypothesistesting/jquery.hypothesistesting.core.js"></script>
+		<script type="text/javascript" src="js/hypothesistesting/jquery.hypothesistesting.debug.js"></script>
+		<script type="text/javascript" src="js/hypothesistesting/jquery.hypothesistesting.test.bootstrap.js"></script>
+		<script type="text/javascript" src="js/hypothesistesting/jquery.hypothesistesting.test.ks.js"></script>
+
+		<!-- Configuracion -->
+ 		<script type="text/javascript" src="js/_settings.js"></script>
+		<script type="text/javascript" src="js/_ui.js"></script>
+		<!--[if IE]>
+		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+
+
+	</head>
+	<body>
+		<div class="main ui-widget">
+			<div class="ui-widget-header ui-corner-top">
+				<h1>Sistema Estad&iacute;stico de Contraste de Hip&oacute;tesis</h1>
+			</div>
+
+			<div class="ui-widget-content">
+
+				<form name="data">
+					<label for="vectorX">Vector de datos primario:</label>
+					<br />
+					<textarea id="vectorX" class="vector">75, 62, 80, 71, 67, 69, 73, 83, 71, 74, 73, 79, 65, 73, 64, 67, 76, 72, 68, 74</textarea>
+					<br />
+					<label for="vectorX">Vector de datos secundario:</label>
+					<textarea id="vectorY" class="vector">78, 66, 78, 71, 69, 71, 76, 82, 75, 72, 74, 71, 68, 76, 67, 71, 72, 72, 73, 75</textarea>
+					<div class="clear"></div>
+
+				</form>
+
+				<div class="accordion">
+
+					<!-- ****************************************************** -->
+					<!-- Prueba de homogeneidad de Wilcoxon muestras pareadas -->
+					<!-- ****************************************************** -->
+					<h3><a href="#">Prueba de homogeneidad de Wilcoxon muestras pareadas</a></h3>
+					<div>
+
+						<div class="ui-state-highlight">
+							<div class="left">
+								<p>Supuestos:</p>
+								<p>
+									<ul>
+										<li>Los datos est&aacute;n pareados y provienen de la misma poblaci&oacute;n.</li>
+										<li>Cada par es escogido aleatoria e independientemente.</li>
+									</ul>
+								</p>
+								<p>X: Variable aleatoria continua.</p>
+								<p>H<sub>0</sub>: "La muestra es homog&eacute;nea (respecto a la mediana)"</p>
+								<p>H<sub>1</sub>: "La muestra NO es homog&eacute;enea (respecto a la mediana)"</p>
+							</div>
+							<div class="right">
+								<button id="ht-test-homogeneity-paired-Wilcoxon-start-button">Calcular</button>
+							</div>
+							<div class="clear"></div>
+						</div>
+
+						<div>
+							<div class="left ht-widget">
+								<h4 class="ui-widget-header">Nivel de significaci&oacute;n (&#945;)</h4>
+								<p class="radio-buttonset">
+
+									<input type="radio" id="ht-test-homogeneity-paired-Wilcoxon-radio-3" name="ht-test-homogeneity-paired-Wilcoxon-radio" value="0.05" checked>
+									<label for="ht-test-homogeneity-paired-Wilcoxon-radio-3">0.05</label>
+
+									<input type="radio" id="ht-test-homogeneity-paired-Wilcoxon-radio-4" name="ht-test-homogeneity-paired-Wilcoxon-radio" value="0.1">
+									<label for="ht-test-homogeneity-paired-Wilcoxon-radio-4">0.1</label>
+
+								</p>
+								<p>Valores tabulados, 6 &lt;= N &lt;= 30.</p>
+							</div>
+
+						<!--
+							<div class="left ht-widget">
+								<h4 class="ui-widget-header">Par&aacute;metros</h4>
+
+								
+							</div>
+						-->
+
+							<div class="clear"></div>
+
+							<div id="ht-test-homogeneity-paired-Wilcoxon-result" title="Resultados" class="">
+
+								<table>
+									<tr>
+										<td>Valor D: </td>
+										<td><div id="ht-test-homogeneity-paired-Wilcoxon-result-d-value"></div></td>
+									</tr>
+									<tr>
+										<td>Valor D<sub>&#945;</sub>: </td>
+										<td><div id="ht-test-homogeneity-paired-Wilcoxon-result-dalpha-value"></div></td>
+									</tr>
+									<tr>
+										<td>Sugerencia: </td>
+										<td><div id="ht-test-homogeneity-paired-Wilcoxon-result-suggest"></div></td>
+									</tr>
+								</table>
+
+							<div class="clear"></div>
+
+						</div>
+
+						<div id="ht-test-homogeneity-paired-Wilcoxon-error" title="Error" class="">
+							<div class="ui-state-error ui-corner-all"><span class="left ui-icon ui-icon-alert"></span><p id="ht-test-homogeneity-paired-Wilcoxon-error-message"></p></div>
+						</div>
+
+						
+						</div>
+						<script type="text/javascript">
+							//* <![CDATA[ */
+							$(document).ready(function() {
+
+								//console.log( 
+									//$.hypothesistesting('randomVector', 1000, 0, 1, 4)
+								//);
+
+								//$("#vectorX").val('1.9, 2.3, 3.3, 3.4, 4.5, 4.5, 4.8, 4.8, 5.6, 6.0');
+
+								$("#ht-test-homogeneity-paired-Wilcoxon-result").hide();
+								$("#ht-test-homogeneity-paired-Wilcoxon-error").hide();
+
+								/** Boton GET */
+								$("#ht-test-homogeneity-paired-Wilcoxon-get-button").button().click(function() {
+									x_vector = $.hypothesistesting('parseFloatArray', $('#vectorX').val());
+									x_vector = new jStat(x_vector);
+
+									x_n = x_vector[0].length;
+									x_mean = x_vector.mean();
+									x_stdev = x_vector.stdev();
+
+									$('#ht-test-homogeneity-paired-Wilcoxon-nx-input').val(x_n);
+									$('#ht-test-homogeneity-paired-Wilcoxon-mean-input').val(x_mean);
+									$('#ht-test-homogeneity-paired-Wilcoxon-stdev-input').val(x_stdev);
+								});
+
+								/** Boton de calculo */
+								$("#ht-test-homogeneity-paired-Wilcoxon-start-button").button({
+									icons : {
+										secondary : "ui-icon-play"
+									},
+									text : true
+								}).click(function()
+								{
+
+									vectorX = $.hypothesistesting('parseFloatArray', $('#vectorX').val())
+									vectorY = $.hypothesistesting('parseFloatArray', $('#vectorY').val())
+									jVectorX = new jStat(vectorX);
+									jVectorY = new jStat(vectorY);
+									
+									console.log(vectorX, vectorY);
+									console.log(jVectorX.median(), jVectorY.median())
+									/*
+									console.log($.hypothesistesting('filter', vectorX, jVectorX.median()));
+									console.log($.hypothesistesting('filter', vectorY, jVectorY.median()));
+									*/
+
+									if(vectorX.length != vectorY.length)
+									{
+											// error, las muestras no esta pareadas
+											return;
+									}
+
+									// DESCARTAR PARES DE MUESTRAS IGUALES
+									var filteredX = [];
+									var filteredY = [];
+									var filtered = [];
+									var j = 0;
+
+									for (j = 0; j < vector.length; j++) {
+										if(vectorX[j] != vectorY[j])
+										{
+											filteredX.push(vectorX[j]);
+											filteredY.push(vectorY[j]);
+
+											filtered.push( {
+												'x' : vectorX[j],
+												'y' : vectorY[j],
+												'diff' : vectorY[j] - vectorX[j],
+												'rtemp' : null,
+												'rank' : null
+											} );
+										}
+									}
+
+									console.log(filtered);
+
+									filtered.sort(function(a,b){return Math.abs(a.diff) - Math.abs(b.diff) });
+
+									
+									for (j = 0; j < filtered.length; j++) {
+										filtered[j].rtemp = j+1;
+									}
+									
+
+									var acum_rank = 0;
+									var contador = 0;
+
+
+									for (i = 0; i < filtered.length; i++) {
+										acum_rank = 0;
+										contador = 0;
+
+										for (j = 0; j < filtered.length; j++) {
+											
+
+											if ( Math.abs(filtered[i].diff) == Math.abs(filtered[j].diff))
+											{
+												
+												acum_rank += filtered[j].rtemp;
+												contador++;
+
+												console.log(i,j, filtered[i].diff, filtered[j].diff, filtered[j].rtemp, acum_rank, contador);
+
+											}
+										}
+
+										filtered[i].rank = acum_rank / contador;
+									}
+
+									//console.log(filtered);
+
+									for (j = 0; j < filtered.length; j++) {
+										console.log(j+1, filtered[j].x, filtered[j].y, filtered[j].diff, filtered[j].rtemp, filtered[j].rank);
+									}
+
+									return;
+
+									//vector = $.hypothesistesting('sort', vector);
+									//vector = new jStat(vector);
+
+									n = vector[0].length;
+
+									if(n < 2)
+									{
+										$('#ht-test-homogeneity-paired-Wilcoxon-error-message').html('Muestra muy peque&ntilde;a. Ingrese m&aacute;s n&uacute;meros en el vector X de entrada.');
+
+										$('#ht-test-homogeneity-paired-Wilcoxon-error').dialog({modal: true});
+										
+										return;
+									}
+
+									mean = $('#ht-test-homogeneity-paired-Wilcoxon-mean-input').val();
+									stdev = $('#ht-test-homogeneity-paired-Wilcoxon-stdev-input').val();
+
+									alpha = $('input[name=ht-test-homogeneity-paired-Wilcoxon-radio]:checked').val();
+									alpha = parseFloat(alpha);
+
+									d = $.hypothesistesting.test.ks('normal', vector, mean, stdev);
+									dalpha = $.hypothesistesting.test.ks('getDNormal', n, alpha);
+
+									$('#ht-test-homogeneity-paired-Wilcoxon-result-d-value').text(d);
+									$('#ht-test-homogeneity-paired-Wilcoxon-result-dalpha-value').text(dalpha);
+
+									if(d < dalpha)
+										$('#ht-test-homogeneity-paired-Wilcoxon-result-suggest').html('Conservar H<sub>0</sub>');
+									else 
+										$('#ht-test-homogeneity-paired-Wilcoxon-result-suggest').html('Rechazar H<sub>0</sub>');
+
+									$("#ht-test-homogeneity-paired-Wilcoxon-result").dialog({
+										modal: true,
+										canMaximize: true,
+										buttons: {
+											Ok: function() {
+												$( this ).dialog( "close" );
+											}
+										}
+									}).dialog('maximize');
+								});
+
+							});
+							/* ]]> */
+						</script>
+					</div>
+					<!-- ****************************************************** -->
+				
+				</div><!-- /accordion -->
+			</div><!-- /Content -->
+
+				<div id="footer" class="ui-widget-content">
+				<p class="center">
+					Desarrollado por <a href="http://gon.cl/">Gonzalo D&iacute;az Cruz</a>
+				</p>
+				<p class="center">
+					&copy; 2012 | <a href="http://www.usach.cl/">Universidad de Santiago de Chile</a>
+				</p>
+			</div><!-- End footer -->
+		</div><!-- End main -->
+</html>
