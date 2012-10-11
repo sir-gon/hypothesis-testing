@@ -22,7 +22,7 @@
 		<script type="text/javascript" src="js/hypothesistesting/jquery.hypothesistesting.core.js"></script>
 		<script type="text/javascript" src="js/hypothesistesting/jquery.hypothesistesting.debug.js"></script>
 		<script type="text/javascript" src="js/hypothesistesting/jquery.hypothesistesting.test.bootstrap.js"></script>
-		<script type="text/javascript" src="js/hypothesistesting/jquery.hypothesistesting.test.ks.js"></script>
+		<script type="text/javascript" src="js/hypothesistesting/jquery.hypothesistesting.test.wilcoxon.js"></script>
 
 		<!-- Configuracion -->
  		<script type="text/javascript" src="js/_settings.js"></script>
@@ -167,108 +167,27 @@
 								}).click(function()
 								{
 
-									vectorX = $.hypothesistesting('parseFloatArray', $('#vectorX').val())
-									vectorY = $.hypothesistesting('parseFloatArray', $('#vectorY').val())
-									jVectorX = new jStat(vectorX);
-									jVectorY = new jStat(vectorY);
-									
-									console.log(vectorX, vectorY);
-									console.log(jVectorX.median(), jVectorY.median())
-									/*
-									console.log($.hypothesistesting('filter', vectorX, jVectorX.median()));
-									console.log($.hypothesistesting('filter', vectorY, jVectorY.median()));
-									*/
+									vectorX = $.hypothesistesting('parseFloatArray', $('#vectorX').val());
+									vectorY = $.hypothesistesting('parseFloatArray', $('#vectorY').val());
 
 									if(vectorX.length != vectorY.length)
 									{
-											// error, las muestras no esta pareadas
-											return;
-									}
-
-									// DESCARTAR PARES DE MUESTRAS IGUALES
-									var filteredX = [];
-									var filteredY = [];
-									var filtered = [];
-									var j = 0;
-
-									for (j = 0; j < vector.length; j++) {
-										if(vectorX[j] != vectorY[j])
-										{
-											filteredX.push(vectorX[j]);
-											filteredY.push(vectorY[j]);
-
-											filtered.push( {
-												'x' : vectorX[j],
-												'y' : vectorY[j],
-												'diff' : vectorY[j] - vectorX[j],
-												'rtemp' : null,
-												'rank' : null
-											} );
-										}
-									}
-
-									console.log(filtered);
-
-									filtered.sort(function(a,b){return Math.abs(a.diff) - Math.abs(b.diff) });
-
-									
-									for (j = 0; j < filtered.length; j++) {
-										filtered[j].rtemp = j+1;
-									}
-									
-
-									var acum_rank = 0;
-									var contador = 0;
-
-
-									for (i = 0; i < filtered.length; i++) {
-										acum_rank = 0;
-										contador = 0;
-
-										for (j = 0; j < filtered.length; j++) {
-											
-
-											if ( Math.abs(filtered[i].diff) == Math.abs(filtered[j].diff))
-											{
-												
-												acum_rank += filtered[j].rtemp;
-												contador++;
-
-												console.log(i,j, filtered[i].diff, filtered[j].diff, filtered[j].rtemp, acum_rank, contador);
-
-											}
-										}
-
-										filtered[i].rank = acum_rank / contador;
-									}
-
-									//console.log(filtered);
-
-									for (j = 0; j < filtered.length; j++) {
-										console.log(j+1, filtered[j].x, filtered[j].y, filtered[j].diff, filtered[j].rtemp, filtered[j].rank);
-									}
-
-									return;
-
-									//vector = $.hypothesistesting('sort', vector);
-									//vector = new jStat(vector);
-
-									n = vector[0].length;
-
-									if(n < 2)
-									{
-										$('#ht-test-homogeneity-paired-Wilcoxon-error-message').html('Muestra muy peque&ntilde;a. Ingrese m&aacute;s n&uacute;meros en el vector X de entrada.');
+										$('#ht-test-homogeneity-paired-Wilcoxon-error-message').html('Las muestras deben contener la misma cantidad de sujetos.');
 
 										$('#ht-test-homogeneity-paired-Wilcoxon-error').dialog({modal: true});
 										
 										return;
 									}
 
-									mean = $('#ht-test-homogeneity-paired-Wilcoxon-mean-input').val();
-									stdev = $('#ht-test-homogeneity-paired-Wilcoxon-stdev-input').val();
-
 									alpha = $('input[name=ht-test-homogeneity-paired-Wilcoxon-radio]:checked').val();
 									alpha = parseFloat(alpha);
+
+
+									$.hypothesistesting.test.wilcoxon('test', vectorX, vectorY, alpha);
+									return;
+
+									
+									n = vector[0].length;
 
 									d = $.hypothesistesting.test.ks('normal', vector, mean, stdev);
 									dalpha = $.hypothesistesting.test.ks('getDNormal', n, alpha);
