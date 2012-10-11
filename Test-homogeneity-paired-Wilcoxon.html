@@ -44,10 +44,10 @@
 				<form name="data">
 					<label for="vectorX">Vector de datos primario:</label>
 					<br />
-					<textarea id="vectorX" class="vector">75, 62, 80, 71, 67, 69, 73, 83, 71, 74, 73, 79, 65, 73, 64, 67, 76, 72, 68, 74</textarea>
+					<textarea id="vectorX" class="vector"></textarea>
 					<br />
 					<label for="vectorX">Vector de datos secundario:</label>
-					<textarea id="vectorY" class="vector">78, 66, 78, 71, 69, 71, 76, 82, 75, 72, 74, 71, 68, 76, 67, 71, 72, 72, 73, 75</textarea>
+					<textarea id="vectorY" class="vector"></textarea>
 					<div class="clear"></div>
 
 				</form>
@@ -72,6 +72,33 @@
 								<p>X: Variable aleatoria continua.</p>
 								<p>H<sub>0</sub>: "La muestra es homog&eacute;nea (respecto a la mediana)"</p>
 								<p>H<sub>1</sub>: "La muestra NO es homog&eacute;enea (respecto a la mediana)"</p>
+								<div class="left">
+								<table>
+									<tr>
+										<td><input type="radio" id="ht-test-media-normal-radio-1" name="ht-test-media-normal-radio" value="eq" checked></td>
+										<td>
+											<label for="ht-test-media-normal-radio-1">
+												Bilateral <br>
+												H<sub>1</sub> =&gt; T
+											</label>
+										</td>
+										<td><input type="radio" id="ht-test-media-normal-radio-2" name="ht-test-media-normal-radio" value="le"></td>
+										<td>
+											<label for="ht-test-media-normal-radio-1">
+												Cola derecha<br>
+												H<sub>1</sub> =&gt;T<sup>+</sup>	
+											</label>
+										</td>
+										<td><input type="radio" id="ht-test-media-normal-radio-3" name="ht-test-media-normal-radio" value="ge"></td>
+										<td>
+											<label for="ht-test-media-normal-radio-3">
+												Cola izquierda<br>
+												H<sub>1</sub> =&gt; T<sup>-</sup>	
+											</label>
+										</td>	
+									</tr>
+								</table>
+							</div>
 							</div>
 							<div class="right">
 								<button id="ht-test-homogeneity-paired-Wilcoxon-start-button">Calcular</button>
@@ -92,15 +119,8 @@
 
 								</p>
 								<p>Valores tabulados, 6 &lt;= N &lt;= 30.</p>
+								<p>Valores aproximados por la Normal con N &gt; 30.</p>
 							</div>
-
-						<!--
-							<div class="left ht-widget">
-								<h4 class="ui-widget-header">Par&aacute;metros</h4>
-
-								
-							</div>
-						-->
 
 							<div class="clear"></div>
 
@@ -108,12 +128,12 @@
 
 								<table>
 									<tr>
-										<td>Valor D: </td>
-										<td><div id="ht-test-homogeneity-paired-Wilcoxon-result-d-value"></div></td>
+										<td>Estad&iacute;stico T: </td>
+										<td><div id="ht-test-homogeneity-paired-Wilcoxon-result-t-value"></div></td>
 									</tr>
 									<tr>
-										<td>Valor D<sub>&#945;</sub>: </td>
-										<td><div id="ht-test-homogeneity-paired-Wilcoxon-result-dalpha-value"></div></td>
+										<td>Puntocr&iacute;tico<sub>&#945;</sub>: </td>
+										<td><div id="ht-test-homogeneity-paired-Wilcoxon-result-t-p_value"></div></td>
 									</tr>
 									<tr>
 										<td>Sugerencia: </td>
@@ -134,12 +154,6 @@
 						<script type="text/javascript">
 							//* <![CDATA[ */
 							$(document).ready(function() {
-
-								//console.log( 
-									//$.hypothesistesting('randomVector', 1000, 0, 1, 4)
-								//);
-
-								//$("#vectorX").val('1.9, 2.3, 3.3, 3.4, 4.5, 4.5, 4.8, 4.8, 5.6, 6.0');
 
 								$("#ht-test-homogeneity-paired-Wilcoxon-result").hide();
 								$("#ht-test-homogeneity-paired-Wilcoxon-error").hide();
@@ -179,24 +193,28 @@
 										return;
 									}
 
+									if(vectorX.length <= 5)
+									{
+										$('#ht-test-homogeneity-paired-Wilcoxon-error-message').html('Sujetos insuficientes.');
+
+										$('#ht-test-homogeneity-paired-Wilcoxon-error').dialog({modal: true});
+										
+										return;
+									}
+
 									alpha = $('input[name=ht-test-homogeneity-paired-Wilcoxon-radio]:checked').val();
 									alpha = parseFloat(alpha);
 
+									H0 = $('input[name=ht-test-media-normal-radio]:checked').val();
 
-									$.hypothesistesting.test.wilcoxon('test', vectorX, vectorY, alpha);
-									return;
-
+									T = $.hypothesistesting.test.wilcoxon('test', vectorX, vectorY, alpha, H0);
+									//console.log(T);
 									
-									n = vector[0].length;
+									$('#ht-test-homogeneity-paired-Wilcoxon-result-t-value').html(T.statistic);
+									$('#ht-test-homogeneity-paired-Wilcoxon-result-t-p_value').html(T.p_value);
 
-									d = $.hypothesistesting.test.ks('normal', vector, mean, stdev);
-									dalpha = $.hypothesistesting.test.ks('getDNormal', n, alpha);
-
-									$('#ht-test-homogeneity-paired-Wilcoxon-result-d-value').text(d);
-									$('#ht-test-homogeneity-paired-Wilcoxon-result-dalpha-value').text(dalpha);
-
-									if(d < dalpha)
-										$('#ht-test-homogeneity-paired-Wilcoxon-result-suggest').html('Conservar H<sub>0</sub>');
+									if(T.statistic > T.p_value)
+										$('#ht-test-homogeneity-paired-Wilcoxon-result-suggest').html('No se rechaza H<sub>0</sub>');
 									else 
 										$('#ht-test-homogeneity-paired-Wilcoxon-result-suggest').html('Rechazar H<sub>0</sub>');
 
